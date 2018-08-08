@@ -3,7 +3,7 @@ Automatic Recognition of Buildings in Satellite Imagery
 This project automatically detects buildings in satellite images. It uses the Burns Edge Detection algorithm to detect edges of buildings.
 
 ## Usage
-``result = searchBuildings(I,angleDev,thresholdIntersect,thresholdArea,tlateral,tangle,toverlap,tunderlap,threshSlope,dMin,dMax)``
+``searchBuildings(I,angleDev,thresholdIntersect,thresholdArea,tlateral,tangle,toverlap,tunderlap,threshSlope,dMin,dMax)``
 
 Inputs params are:
 
