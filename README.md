@@ -6,11 +6,11 @@ This project automatically detects buildings in satellite images. It uses the Bu
 ``result = searchBuildings(I,angleDev,thresholdIntersect,thresholdArea,tlateral,tangle,toverlap,tunderlap,threshSlope,dMin,dMax)``
 
 Inputs params are:
-``
-angleDev              Angle deviation between lines to form corners
-thresholdIntersect    Threshold on line intersection
 
-thresholdArea         Minimum area for a line support region
+- angleDev              Angle deviation between lines to form corners
+- thresholdIntersect    Threshold on line intersection
+
+- thresholdArea         Minimum area for a line support region
 
 tlateral              Max lateral distance between lines
 
