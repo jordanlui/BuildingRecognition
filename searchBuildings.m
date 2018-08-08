@@ -87,75 +87,27 @@ linkedLines = linkLines(lines,tlateral,tangle,toverlap,tunderlap);
 % Note that we should revise this section of code to extend line segments
 % during intersection detection, to help increase rate of detection.
 
-% sprintf('time for edge detection, voting, and line linking was %.2f s',toc)
-% intersectionstart = toc;
 intersection = computeLineIntersection(linkedLines,thresholdIntersect);
-% intersectiontime=toc - intersectionstart;
-% sprintf('Line intersection took  %.2f seconds',intersectiontime)
 
 %% Identify potential building corners;
 % Now that we have line intersections we can look at specific corners where
 % walls intersect nearly at 90 degree angles (+/- a tolerance angle), as these would be good
 % potential building corners. 
 % Outputs a matrix that is formatted as [line1 line2 x y slope1 slope2 angle]
-timestart = toc;
+
 buildingcorners = computeCorners(linkedLines,intersection,angleMin,angleMax);
-% sprintf('Building corner detection took %.2f s',toc-timestart)
 
 %% Building recognition
 % Using the 2EC data we will search for sets of 2EC segments that "line-up"
 % Following function will finding sets of 2EC that intersect as a square
-timestart = toc;
-% [cornerIDs,corners] = identifyBuilding(buildingcorners,M,N,0.3,50,round(sqrt(M^2 + N^2)));
+
 [cornerIDs,corners] = identifyBuilding(buildingcorners,M,N,threshSlope,dMin,dMax);
-% sprintf('Time for building recognition was %.2f s',timestart - toc)
 
 %% Wrap up
 % Summarize information  
 % Timing of script
 runningtime = toc;
 sprintf('Total run time was %.3f seconds',runningtime)
-
-%% Plot building corners and regular line intersections
-% figure(1)
-% imshow(I)
-% hold on
-% plot(buildingcorners(:,3),buildingcorners(:,4),'bx','MarkerSize',10)
-% plot(intersection(:,3),intersection(:,4),'g.','MarkerSize',10)
-% legend('2EC','line intersections')
-% str=sprintf('Corners %i and intersections %i. Threshold area %i, angles between %i and %i',length(buildingcorners),length(intersection),thresholdArea,angleMin,angleMax);
-% title(str)
-% saveas(gcf,'cornerLineIntersection.png')
-
-%% Plot building corners and lines
-% figure(2)
-% imshow(I)
-% hold on
-% plot(buildingcorners(:,3),buildingcorners(:,4),'bx','MarkerSize',10)
-% for i = 1:length(linkedLines)
-%     plot([linkedLines(i,3) linkedLines(i,5)],[linkedLines(i,4) linkedLines(i,6)],'-')
-% end
-% str=sprintf('Corners %i and lines %i. Threshold area %i, angles %i to %i',length(buildingcorners),length(linkedLines),thresholdArea,angleMin,angleMax);
-% title(str)
-% saveas(gcf,'cornersLines.png')
-
-%% Plot Connected lines on image
-% figure(3)
-% imshow(I)
-% hold on
-% lines2=lines;
-% % lines2=linelinking(lines);
-% intersection2 = lineintersect(lines2,thresholdIntersect);
-% buildingcorners2 = buildingcornercandidate(lines2,intersection2,angleMin,angleMax);
-% plot(buildingcorners2(:,3),buildingcorners2(:,4),'bx','MarkerSize',10)
-% plot(intersection2(:,3),intersection2(:,4),'g.','MarkerSize',10)
-% for i = 1:length(lines2)
-%     plot([lines2(i,3) lines2(i,5)],[lines2(i,4) lines2(i,6)],'-')
-% end
-% str=sprintf('Joined Lines, threshold area %i, angles between %i and %i, %i lines and %i 2EC segments',thresholdArea,angleMin,angleMax,length(lines2),length(buildingcorners2));
-% title(str)
-% saveas(gcf,'connectedLines.png')
-
 
 %% Plot buildings on original image
 figure(4)
@@ -164,16 +116,9 @@ hold on
 for i = 1:length(cornerIDs)
     plot(corners{i}.x,corners{i}.y,'-rs','LineWidth',5)
 end
-str=sprintf('Detected %i Buildings. %i intersections, %i 2EC',length(cornerIDs),length(intersection),length(buildingcorners));
+str=sprintf('Detected %i Buildings. %i intersections, %i corners',length(cornerIDs),length(intersection),length(buildingcorners));
 title(str)
 disp(str)
 saveas(gcf,'output.png')
-
-
-%% Log results to file
-% global fid
-% fid = fopen('log.txt','at');
-% fprintf(fid, '\n%s    Building recognition on %s. %i buildings. Run time %.2fs. Threshold area %i, angles between %i and %i. Detected %i line intersections, %i 2-Edge-1-Corner segments',char(datetime),filename,length(g),runningtime,thresholdarea,anglemin,anglemax,length(intersection),length(buildingcorners));
-% fclose('all'); 
 
 end
