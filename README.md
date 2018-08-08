@@ -6,8 +6,10 @@ This project automatically detects buildings in satellite images. It uses the Bu
 result = searchBuildings(I,angleDev,thresholdIntersect,thresholdArea,tlateral,tangle,toverlap,tunderlap,threshSlope,dMin,dMax)
 
 Inputs params are:
+
 angleDev              Angle deviation between lines to form corners
 thresholdIntersect    Threshold on line intersection
+
 thresholdArea         Minimum area for a line support region
 tlateral              Max lateral distance between lines
 tangle                Max angle between lines
@@ -38,7 +40,7 @@ A building shape is found. Further work needed to improve the algorihm's detecti
 ### Image pre filtering
 Image is pre-processed with Gaussian smoothing to remove some image noise.
 ### Burns Edge Detection
-Burns edge detection is run to look for gradients in image that indicate edges. This algorithm sorts the lines into “gradient bins�? based on the angle of the line. The algorithm then identifies the most dominant lines based on size
+Burns edge detection is run to look for gradients in image that indicate edges. This algorithm sorts the lines into â€œgradient binsâ€? based on the angle of the line. The algorithm then identifies the most dominant lines based on size
 ### Compute Line regions
 Line regions are constructed into lines based on a least squares fit of a line of all points in that region
 ### Link lines that are similar or close
